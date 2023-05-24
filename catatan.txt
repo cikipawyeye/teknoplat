@@ -1,0 +1,17 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-and-set-up-laravel-with-docker-compose-on-ubuntu-22-04#step-2-setting-up-the-application-s-env-file
+
+Build Image:
+$ docker-compose build app
+
+Run service:
+$ docker-compose up -d
+
+Check status:
+$ docker-compose ps
+
+Run command:
+$ docker-compose exec app ls -l
+$ docker-compose exec app php artisan migrate:fresh --seed
+$ docker-compose exec app rm -rf vendor composer.lock
+$ docker-compose exec app composer install
+$ docker-compose exec app php artisan key:generate

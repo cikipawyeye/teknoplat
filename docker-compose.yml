@@ -1,0 +1,54 @@
+version: "3.9"
+services:
+  app:
+    build:
+      args:
+        user: a02
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: teknoplat
+    container_name: teknoplat-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - teknoplat
+
+  db:
+    image: mysql:8.0
+    container_name: teknoplat-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: crud_app_a02
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: hihanghoheng
+      MYSQL_USER: a02
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - teknoplat
+      
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: teknoplat-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - teknoplat
+      
+networks:
+  teknoplat:
+    driver: bridge
+
+
+  
